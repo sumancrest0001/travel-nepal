@@ -16,6 +16,7 @@ exports.handleGetReviews = catchAsync(async (req, res) => {
 });
 
 exports.handleCreateReview = catchAsync(async (req, res) => {
+  console.log(req);
   const review = new Review(req.body);
   const newReview = await review.save();
   res.status(201).json({

@@ -28,7 +28,6 @@ const userSchema = new mongoose.Schema(
       type: 'String',
       required: [true, 'password is required'],
       minLength: [8, 'Must have at least 8 characters'],
-      maxLength: [15, 'Must have less than 15 characters'],
       select: false,
     },
     passwordConfirm: {
@@ -91,7 +90,6 @@ userSchema.pre('save', async function (next) {
   this.passwordChangedAt = Date.now() - 1000;
   next();
 });
-
 userSchema.pre(/^find/, function (next) {
   this.find({ active: { $ne: false } });
   next();
