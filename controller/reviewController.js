@@ -16,7 +16,6 @@ exports.handleGetReviews = catchAsync(async (req, res) => {
 });
 
 exports.handleCreateReview = catchAsync(async (req, res) => {
-  console.log(req);
   const review = new Review(req.body);
   const newReview = await review.save();
   res.status(201).json({
@@ -30,10 +29,8 @@ exports.handleCreateReview = catchAsync(async (req, res) => {
 exports.manageReviewId = (req, res, next) => {
   if (!req.body.tour) req.body.tour = req.params.tourId;
   if (!req.body.user) req.body.user = req.user.id;
+  next();
 };
 
 exports.handleDeleteReview = factory.deleteOne(Review, 'review');
 exports.handleUpdateReview = factory.updateOne(Review, 'review');
-exports.handleCreateReview = factory.createOne(Review, 'review');
-
-exports.handleDeleteReview = factory.deleteOne(Review, 'review');

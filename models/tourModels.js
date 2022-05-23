@@ -29,6 +29,7 @@ const tourSchema = new mongoose.Schema(
     ratingsAverage: {
       type: Number,
       default: 4.5,
+      set: (val) => +(val.toFixed(2)),
     },
     ratingsQuantity: {
       type: Number,
@@ -109,8 +110,9 @@ const tourSchema = new mongoose.Schema(
   },
 );
 
-tourSchema.index({ price: 1, ratingsAverage: 1 });
+tourSchema.index({ price: 1, ratingsAverage: -1 });
 tourSchema.index({ slug: 1 });
+tourSchema.index({ startLocation: '2dsphere' });
 // virtual populate of reviews on tour
 tourSchema.virtual('reviews', {
   ref: 'Review',
@@ -153,10 +155,10 @@ tourSchema.pre('save', async function (next) {
 
 // Aggregation middleware
 
-tourSchema.pre('aggregate', function (next) {
+/* tourSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
   next();
-});
+}); */
 
 const Tour = mongoose.model('Tour', tourSchema);
 module.exports = Tour;
